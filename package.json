@@ -1,0 +1,12 @@
+{
+  "name": "project",
+  "version": "0.1.0",
+  "description": "Put a description here",
+  "fhirVersions": [
+    "4.0.0"
+  ],
+  "dependencies": {
+    "hl7.fhir.us.core": "latest",
+    "hl7.fhir.r4.core": "latest"
+  }
+}

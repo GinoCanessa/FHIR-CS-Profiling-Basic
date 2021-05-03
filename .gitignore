@@ -380,3 +380,7 @@ msbuild.wrn
 /temp
 /secrets
 /local
+
+# Validator tooling and configuration
+fhirpkg.lock.json
+validator_cli.jar
