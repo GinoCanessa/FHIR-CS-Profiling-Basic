@@ -1,5 +1,6 @@
-# PROJECT Info
+# FHIR CS Profiling Basic Info
 
+A .Net 5 C# application to start working with Profiles and Validation.
 
 # Documentation
 
