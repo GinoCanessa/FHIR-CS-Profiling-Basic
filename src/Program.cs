@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using fhir_cs_profiling_basic.UsCore;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.Specification;
@@ -26,7 +27,7 @@ namespace fhir_cs_profiling_basic
           string profileDirectory = ""
         )
         {
-          string rootDir = Path.Combine(Directory.GetCurrentDirectory(), "..");
+          string rootDir = Directory.GetCurrentDirectory();
 
           if (string.IsNullOrEmpty(patientJsonFilename))
           {
@@ -46,21 +47,6 @@ namespace fhir_cs_profiling_basic
           // create a FHIR patient
           Patient patient = new Patient()
           {
-            // metadata that provides technical and workflow context to the resource
-            Meta = new Meta()
-            {
-              // An assertion that the content conforms to a resource profile
-              Profile = new List<string>()
-              {
-                // specifically, we want to conform with US-Core Patient
-                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient",
-              }
-            },
-            // add a simple extension - US-Core Birthsex to the root of the patient
-            Extension = new List<Extension>()
-            {
-              new Extension("http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex", new Code("UNK"))
-            },
             // US-Core requires an identifier
             Identifier = new List<Identifier>()
             {
@@ -92,6 +78,14 @@ namespace fhir_cs_profiling_basic
           // add the extension to the patient
           patient.Extension.Add(raceExt);
 
+          patient.UsCorePatientSetProfileConformance(true);
+          patient.UsCoreBirthSexSet(UsCoreBirthSex.UsCoreBirthSexValues.Unkown);
+
+          if (patient.UsCoreBirthSexTryGet(out UsCoreBirthSex.UsCoreBirthSexValues? birthSexValue))
+          {
+            System.Console.WriteLine($"Found US Core Birth Sex: {birthSexValue}");
+          }
+
           // create a FHIR JSON serializer, using pretty-printing (nice formatting)
           FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
           {
@@ -103,6 +97,9 @@ namespace fhir_cs_profiling_basic
 
           // write the patient file
           File.WriteAllText(patientJsonFilename, patientJson);
+
+          // display our patient on the console
+          Console.WriteLine(patientJson);
 
           // create a cached resolver for resource validation
           IResourceResolver resolver = new CachedResolver(
