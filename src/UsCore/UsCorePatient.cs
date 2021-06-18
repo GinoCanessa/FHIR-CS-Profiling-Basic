@@ -6,48 +6,34 @@ using Hl7.Fhir.Model;
 namespace fhir_cs_profiling_basic.UsCore
 {
   /// <summary>
-  /// Class with utility functions for Us Core Patient operations.
+  /// Class with Patient extensions for US Core Patient objects
   /// http://hl7.org/fhir/us/core/StructureDefinition-us-core-patient.html
   /// </summary>
   public static class UsCorePatient
   {
     /// <summary>
-    /// Official Profile URL for US Core Patient.
+    /// The official URL for the US Core Patient profile, used to assert conformance.
     /// </summary>
     public const string ProfileUrl = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
 
     /// <summary>
-    /// Set the assertion that a patient object is conforming to the US Core Patient Profile.
+    /// Set the assertion that a patient object conforms to the US Core Patient Profile.
     /// </summary>
     /// <param name="patient"></param>
-    /// <param name="addConformance">True to assert conformance, false to remove the assertion.</param>
-    public static void UsCorePatientSetProfileConformance(
-      this Patient patient,
-      bool addConformance = true)
+    public static void UsCorePatientProfileSet(this Patient patient)
     {
       if (patient == null)
       {
         throw new ArgumentNullException(nameof(patient));
       }
 
-      // check to see if there is no Meta
       if (patient.Meta == null)
       {
-        if (!addConformance)
-        {
-          return;
-        }
-
         patient.Meta = new Meta();
       }
 
       if ((patient.Meta.Profile == null) || (patient.Meta.Profile.Count() == 0))
       {
-        if (!addConformance)
-        {
-          return;
-        }
-
         patient.Meta.Profile = new List<string>()
         {
           ProfileUrl,
@@ -56,31 +42,53 @@ namespace fhir_cs_profiling_basic.UsCore
         return;
       }
 
-      // check if the profile exists
       if (patient.Meta.Profile.Contains(ProfileUrl))
       {
-        if (addConformance)
-        {
-          // don't need to add
-          return;
-        }
-
-        if (!addConformance)
-        {
-          // remove
-          ((List<string>)patient.Meta.Profile).Remove(ProfileUrl);
-          return;
-        }
-      }
-
-      if (!addConformance)
-      {
-        // not present and don't add it
         return;
       }
 
-      // add this profile
-      ((List<string>)patient.Meta.Profile).Add(ProfileUrl);
+      patient.Meta.Profile.Append(ProfileUrl);
+    }
+
+    /// <summary>
+    /// Clear the assertion that a patient object conforms to the US Core Patient Profile.
+    /// </summary>
+    /// <param name="patient"></param>
+    public static void UsCorePatientProfileClear(this Patient patient)
+    {
+      if (patient == null)
+      {
+        throw new ArgumentNullException(nameof(patient));
+      }
+
+      if (patient.Meta == null)
+      {
+        return;
+      }
+
+      // set last updated so that meta is never empty
+      patient.Meta.LastUpdated = DateTimeOffset.Now;
+
+      if ((patient.Meta.Profile == null) || (patient.Meta.Profile.Count() == 0))
+      {
+        return;
+      }
+
+      if (patient.Meta.Profile.Contains(ProfileUrl))
+      {
+        int index = 0;
+        foreach (string profile in patient.Meta.Profile)
+        {
+          if (profile.Equals(ProfileUrl, StringComparison.Ordinal))
+          {
+            break;
+          }
+
+          index++;
+        }
+
+        patient.Meta.ProfileElement.RemoveAt(index);
+      }
     }
   }
 }

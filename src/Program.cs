@@ -24,8 +24,7 @@ namespace fhir_cs_profiling_basic
         public static void Main(
           string patientJsonFilename = "",
           string outcomeJsonFilename = "",
-          string profileDirectory = ""
-        )
+          string profileDirectory = "")
         {
           string rootDir = Directory.GetCurrentDirectory();
 
@@ -78,12 +77,19 @@ namespace fhir_cs_profiling_basic
           // add the extension to the patient
           patient.Extension.Add(raceExt);
 
-          patient.UsCorePatientSetProfileConformance(true);
-          patient.UsCoreBirthSexSet(UsCoreBirthSex.UsCoreBirthSexValues.Unkown);
+          // set US Core Patient profile conformance
+          patient.UsCorePatientProfileSet();
+          
+          // add a US Core Birthsex
+          patient.UsCoreBirthsexSet(UsCoreBirthsex.UsCoreBirthsexValues.Female);
 
-          if (patient.UsCoreBirthSexTryGet(out UsCoreBirthSex.UsCoreBirthSexValues? birthSexValue))
+          if (patient.UsCoreBirthsexTryGet(out UsCoreBirthsex.UsCoreBirthsexValues? birthsex))
           {
-            System.Console.WriteLine($"Found US Core Birth Sex: {birthSexValue}");
+            System.Console.WriteLine($"Found US Core Birthsex: {birthsex}");
+          }
+          else
+          {
+            System.Console.WriteLine("US Core Birthsex not found!");
           }
 
           // create a FHIR JSON serializer, using pretty-printing (nice formatting)
