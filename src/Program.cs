@@ -66,16 +66,16 @@ namespace fhir_cs_profiling_basic
             Gender = AdministrativeGender.Unknown,
           };
 
-          // create a complex extension to add to our patient
-          Extension raceExt = new Extension("http://hl7.org/fhir/us/core/StructureDefinition/us-core-race", null);
-          raceExt.Extension = new List<Extension>()
-          {
-            new Extension("ombCategory", new Coding("urn:oid:2.16.840.1.113883.6.238", "1002-5", "American Indian or Alaska Native")),
-            new Extension("text", new FhirString("Race default text"))
-          };
+          // // create a complex extension to add to our patient
+          // Extension raceExt = new Extension("http://hl7.org/fhir/us/core/StructureDefinition/us-core-race", null);
+          // raceExt.Extension = new List<Extension>()
+          // {
+          //   new Extension("ombCategory", new Coding("urn:oid:2.16.840.1.113883.6.238", "1002-5", "American Indian or Alaska Native")),
+          //   new Extension("text", new FhirString("Race default text"))
+          // };
 
-          // add the extension to the patient
-          patient.Extension.Add(raceExt);
+          // // add the extension to the patient
+          // patient.Extension.Add(raceExt);
 
           // set US Core Patient profile conformance
           patient.UsCorePatientProfileSet();
@@ -91,6 +91,17 @@ namespace fhir_cs_profiling_basic
           {
             System.Console.WriteLine("US Core Birthsex not found!");
           }
+
+          patient.UsCoreRaceSet(
+            "Race default text", 
+            new UsCoreRace.UsCoreOmbRaceCategoryValues[] { UsCoreRace.UsCoreOmbRaceCategoryValues.Unknown });
+
+          patient.UsCoreRaceTextSet("Updated text");
+
+          patient.UsCoreRaceOmbCategoryAdd(UsCoreRace.UsCoreOmbRaceCategoryValues.AmericanIndianOrAlaskaNative);
+          patient.UsCoreRaceOmbCategoryAdd(UsCoreRace.UsCoreOmbRaceCategoryValues.AmericanIndianOrAlaskaNative);
+          patient.UsCoreRaceOmbCategoryAdd(UsCoreRace.UsCoreOmbRaceCategoryValues.Asian);
+          patient.UsCoreRaceOmbCategoryAdd(UsCoreRace.UsCoreOmbRaceCategoryValues.Unknown);
 
           // create a FHIR JSON serializer, using pretty-printing (nice formatting)
           FhirJsonSerializer serializer = new FhirJsonSerializer(new SerializerSettings()
