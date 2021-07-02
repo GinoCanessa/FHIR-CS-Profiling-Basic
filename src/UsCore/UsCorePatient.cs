@@ -47,7 +47,7 @@ namespace fhir_cs_profiling_basic.UsCore
         return;
       }
 
-      patient.Meta.Profile.Append(ProfileUrl);
+      patient.Meta.Profile = patient.Meta.Profile.Append(ProfileUrl);
     }
 
     /// <summary>
