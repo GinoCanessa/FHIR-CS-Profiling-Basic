@@ -16,8 +16,14 @@ namespace fhir_cs_profiling_basic.UsCore
     /// </summary>
     public const string ProfileUrl = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-vital-signs";
 
+    /// <summary>
+    /// The canonical URL for the Observation Category code system
+    /// </summary>
     public const string UrlCodeSystemObservationCategory = "http://terminology.hl7.org/CodeSystem/observation-category";
 
+    /// <summary>
+    /// The vital-signs code value from the Observation Category code system.
+    /// </summary>
     public const string ObservationCategoryVitalSigns = "vital-signs";
 
     /// <summary>

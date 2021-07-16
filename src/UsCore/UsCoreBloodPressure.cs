@@ -16,6 +16,9 @@ namespace fhir_cs_profiling_basic.UsCore
     /// </summary>
     public const string ProfileUrl = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-blood-pressure";
 
+    /// <summary>
+    /// The canoical URL for the LOINC code system.
+    /// </summary>
     public const string UrlCodeSystemLoinc = "http://loinc.org";
 
     /// <summary>
