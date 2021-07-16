@@ -1,3 +1,21 @@
 {
-  "resourceType": "OperationOutcome"
+  "resourceType": "OperationOutcome",
+  "issue": [
+    {
+      "severity": "error",
+      "code": "incomplete",
+      "details": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/dotnet-api-operation-outcome",
+            "code": "4000"
+          }
+        ],
+        "text": "Unable to resolve reference to profile 'http://hl7.org/fhir/StructureDefinition/Patient'"
+      },
+      "location": [
+        "Patient"
+      ]
+    }
+  ]
 }
