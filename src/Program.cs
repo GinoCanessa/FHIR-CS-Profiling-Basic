@@ -45,10 +45,27 @@ namespace fhir_cs_profiling_basic
         profileDirectory = Path.Combine(rootDir, "profiles");
       }
 
-      Patient resource = CreatePatient();
+      // Patient patient = CreatePatient();
+      // ValidateResource<Patient>(patient, new UsCorePatientValidator());
 
-      UsCorePatientValidator fluentValidator = new UsCorePatientValidator();
-      ValidationResult validationResult = fluentValidator.Validate(resource);
+      Observation resource = CreateObservation();
+      ValidateResource<Observation>(resource, new UsCoreBloodPressureValidator());
+
+      // ValidateOfficial(resource, resourceJsonFilename, profileDirectory, outcomeJsonFilename);
+    }
+
+    /// <summary>
+    /// Validate a resource against a fluent validator
+    /// </summary>
+    /// <param name="resource"></param>
+    /// <param name="validator"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    private static bool ValidateResource<T>(
+      T resource, 
+      FluentValidation.AbstractValidator<T> validator)
+    {
+      ValidationResult validationResult = validator.Validate(resource);
 
       System.Console.WriteLine($"Validation passed: {validationResult.IsValid}");
 
@@ -60,7 +77,7 @@ namespace fhir_cs_profiling_basic
         }
       }
 
-      // ValidateOfficial(resource, resourceJsonFilename, profileDirectory, outcomeJsonFilename);
+      return validationResult.IsValid;
     }
 
     /// <summary>

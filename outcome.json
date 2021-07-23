@@ -11,10 +11,10 @@
             "code": "4000"
           }
         ],
-        "text": "Unable to resolve reference to profile 'http://hl7.org/fhir/StructureDefinition/Patient'"
+        "text": "Unable to resolve reference to profile 'http://hl7.org/fhir/StructureDefinition/Observation'"
       },
       "location": [
-        "Patient"
+        "Observation"
       ]
     }
   ]
