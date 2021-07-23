@@ -46,6 +46,11 @@ namespace fhir_cs_profiling_basic.Validation
       RuleFor(patient => patient.Gender)
         .NotNull()
         .WithMessage("Patient.gender is required.");
+
+      // Patient.communication: any values must include a language
+      RuleForEach(p => p.Communication)
+        .Must(communication => communication.Language != null)
+        .WithMessage("Every Patient.communication requries a language");
     }
 
     /// <summary>
